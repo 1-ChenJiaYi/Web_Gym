@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <script>  
+    function foo(name, age) {
+      console.log(this, name, age) 
+    }
+
+    function bar(...arg) {
+      console.log(...arg) 
+    }
+    // 手写apply: 
+    Function.prototype.jyapply = function(thisArg, otherArg) {
+      // this -> 调用的函数 
+      thisArg = ((thisArg !== undefined && thisArg !== null) ? Object(thisArg) : window) 
+      Object.defineProperty(thisArg, 'fn', {
+        enumerable: false, 
+        configurable: true, 
+        writable: false, 
+        value: this 
+      })
+      thisArg.fn(...otherArg)   
+      delete thisArg.fn 
+    }
+    
+    // 手写call方法： 
+    Function.prototype.jycall = function(thisArg, ...otherArg) {
+      // this -> 调用的函数 
+      thisArg = ((thisArg !== undefined && thisArg !== null) ? Object(thisArg) : window) 
+      Object.defineProperty(thisArg, 'fn', {
+        enumerable: false, 
+        configurable: true, 
+        writable: false, 
+        value: this 
+      })
+      thisArg.fn(...otherArg)   
+      delete thisArg.fn 
+    }
+    
+
+    // 手写bind方法： 返回一个函数：
+    Function.prototype.jybind = function(thisArg, ...otherArg) {
+      thisArg = ((thisArg !== undefined && thisArg !== null) ? Object(thisArg) : window) 
+      Object.defineProperty(thisArg, 'fn', {
+        enumerable: false, 
+        configurable: true, 
+        writable: false, 
+        value: this 
+      })
+
+      return (...newArg) => thisArg.fn(...otherArg, ...newArg)  
+    } 
+    const newfo = bar.jybind({'1': 2}, 1, 2, 3) 
+    newfo(123123, 123123, 123123) 
+  </script>
+
+</body>
+</html>

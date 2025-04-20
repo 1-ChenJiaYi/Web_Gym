@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+
+  <button class="nav"> nav button </button>
+  <script>
+    class EventBus {
+      constructor() {
+          this.evMap = {} 
+      }
+      // 监听 
+      on(eventName, eventFn) {
+        const eList = this.evMap[eventName] 
+        if(!eList) this.evMap[eventName] = [] 
+        this.evMap[eventName].push(eventFn)
+      }
+      // 发射 
+      emit(eventName, ...args) {
+        let eList = this.evMap[eventName] 
+        if(!eList) return 
+        eList.forEach(fn => {
+          fn(...args)  
+        });
+      }
+
+      // 取消监听：
+      off(eventName, eventFn) {
+        let eventFns = this.evMap[eventName] 
+        if(!eventFns) return 
+        for(let i = 0; i < eventFns; ++ i ) {
+          const Fn = eventFns[i] 
+          if(Fn === eventFn) {
+            eventFns.splice(i, 1); 
+            break 
+          }
+        }
+        if(!eventFns.length) {
+          delete this.evMap[eventName] 
+        }
+      }
+    }
+  </script>
+
+  <script> 
+
+    const eventBus = new EventBus() 
+    const btnEl = document.querySelector("button") 
+
+    btnEl.onclick = function() {
+      eventBus.emit("click")  
+    }
+    
+    eventBus.on("click",()=>{
+      console.log("click")
+    })
+
+    
+  </script>
+  
+</body>
+</html>

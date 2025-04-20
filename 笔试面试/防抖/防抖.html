@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+
+  <input type="text">
+  <button>取消</button>
+  <script>
+    // 1、接收什么参数
+    // 2、返回值
+
+
+    // 防抖基本功能：
+    // 取消功能：给_deb加一个属性 
+    // 获取返回值
+    // 原则：一个函数只做一件事，一个变量也只记录一种状态 
+    function deb(fn, delay, immediate = false, resultCallback) {
+      let timer = null 
+      let flag = 0 
+
+      const _deb = function(...args) {
+        
+        return new Promise((resolve, reject) => {
+          try {
+            if(timer) clearTimeout(timer) 
+            if(!flag && immediate) {
+              flag = 1 
+              let res = fn.apply(this, args)
+              resolve(res) 
+              if(resultCallback) resultCallback(res)  
+              return 
+            }
+
+            timer = setTimeout(()=>{
+              let res = fn.apply(this, args)
+              reject(res) 
+              if(resultCallback) resultCallback(res) 
+              timer = null
+              flag = 0  
+            }, delay)
+          }
+          catch(err) {
+            reject(err) 
+          }
+        
+        })
+      }
+      _deb.cancel = function() {
+        if(timer) clearTimeout(timer) 
+        timer = null
+        flag = 0 
+      } 
+      return _deb 
+    }
+  </script>
+
+  <script>
+    // 防抖实现：
+    let inputEl = document.querySelector('input') 
+    
+    let cnt = 1 
+    // 基本实现：
+    // inputEl.oninput = deb(function(event, ...args) {
+    //   console.log("发送网络请求: ", cnt ++,  this, event) 
+    // }, 3000)
+
+    const myFn = deb(function(event, ...args) {
+      console.log("发送网络请求: ", cnt ++,  this, event) 
+      return "sasdasd"
+    }, 3000)
+
+    // 如何在dom上监听：
+    inputEl.oninput = function(event) {
+      myFn(event).then(res=>{
+        console.log(res)
+      }).catch(err=>{
+        console.log(err) 
+      }) 
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <script>
+    function isObj(va) {
+      if (va === null) return false 
+      const str = typeof va 
+      return (str === "object" || str === "function") 
+    }
+
+
+    function deepCopy(obj, mp = new WeakMap()) {
+      
+      if(typeof obj === 'symbol') {
+        return Symbol(obj.description) 
+      } 
+
+      if(!isObj(obj)) return obj
+      
+      // set 无法进行 for-in
+      if(obj instanceof Set) {
+        const newS = new Set() 
+        for(const setItem of obj) newS.add(deepCopy(setItem), mp)
+        return newS 
+      }
+
+
+      if(obj instanceof Map) {
+        const newMp = new Map() 
+        for(const [k, v] of obj) 
+          newMp[k] = deepCopy(v, mp) 
+        return newMp  
+      }
+
+      if(typeof obj === 'function') return obj 
+      if(mp.get(obj)) return mp.get(obj) 
+      
+      const Obj = Array.isArray(obj) ? [] : {} 
+      mp.set(obj, Obj) 
+
+      // 遍历普通key 
+      for(const key in obj) {
+        Obj[key] = deepCopy(obj[key], mp)   
+      }
+
+      // 遍历所有Symbol 
+      
+      for(const key of Object.getOwnPropertySymbols(obj)) {
+        Obj[Symbol(key.description)] = deepCopy(obj[key], mp) 
+      }
+      return Obj 
+    }
+  </script>
+
+  <script>
+
+    const set = new Set([1, 2, 3, 4]) 
+    const map = new Map() 
+    map[1] = 2 
+    const info = {
+      name: 'cjy', 
+      age: 18, 
+      friend: {
+        name: 'hxc', 
+        adress: {
+          names: '广州', 
+          detail: '龙洞', 
+          intro: '....'
+        }
+      }, 
+      set, 
+      map, 
+      run() {
+        console.log("aaaa") 
+      }, 
+      sk: Symbol(), 
+      [Symbol()]: function() {
+        console.log("f00")
+      }
+    } 
+
+    info.self = info  // 循环引用
+
+    const newinfo = deepCopy(info) 
+    // console.log(newinfo, newinfo===info)
+
+    // console.log(newinfo === info)
+    
+    // console.log(newinfo.name === info.name) 
+    // function foo() {
+
+    // } 
+    // obj = {} 
+    // arr = []  
+    // console.log(typeof foo)   // function 
+    // console.log(typeof obj)  // obj 
+    // console.log(typeof arr)  // obj
+
+    // console.log(Object.getPrototypeOf(arr) === Array.prototype)
+  </script>
+</body>
+</html>

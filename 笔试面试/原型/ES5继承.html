@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  
+
+    <script>
+        // 1、 Student继承Person 
+        function Person(name, age) {
+          this.age = age 
+          this.name = name 
+        }
+
+        Person.prototype.run = function() {
+          console.log("run, ", this.name, this.age)   
+        }
+
+        Person.prototype.eat = function() {
+          console.log("eat ", this.name, this.age)  
+        }
+        
+
+        function stu(name, age, a, b) {
+          this.a = a 
+          this.b = b 
+
+        }
+
+        // const stu1 = new stu(1, 2, 3, 4)  
+        
+        
+        
+        // 实现继承，stu继承Person 
+        // (1) 不推荐, 会多调用构造器 
+        // const obj = new Person() 
+        // stu.prototype = obj 
+
+        // (2) 存在兼容性问题 
+        // const obj = {} 
+        // obj.__proto__ = Person.prototype 
+        // stu.prototype = obj 
+
+        // (3) 大佬的写法：最好的写法
+        // function F() {} 
+        // F.prototype = Person.prototype 
+        // stu.prototype = F 
+
+        // (4) 现代写法：
+        // const obj = Object.create(Person.prototype) 
+        // stu.prototype = obj  
+
+        // (5) 封装： 工具函数，寄生式写法 
+        function inherit(Son, Fa) {
+          const obj = Fa => {
+            function F() {} 
+            F.prototype = Fa.prototype 
+            return new F() 
+          } 
+          Son.prototype = obj
+          Object.defineProperty(Son.prototype, 'constructor', {
+            enumerable: false, 
+            configurable: true, 
+            writable: true, 
+            value: Son 
+          })
+        } 
+
+        
+  </script>
+</body>
+</html>

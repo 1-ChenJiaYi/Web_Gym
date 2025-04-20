@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <script>
+    // 用fetch发送get请求：
+    fetch("http://123.207.32.32:8000/home/multidata").then(res => {
+      res.json().then(res => {
+        console.log(res)
+      }) 
+    
+    }).catch(err => {
+      console.log(err) 
+    })
+
+    // 用异步函数优化：
+    async function getdata() {
+      const response = await fetch("http://123.207.32.32:8000/home/multidata") 
+      const res = await response.json() 
+      console.log(res)
+    }
+
+    getdata() 
+  </script>
+</body>
+</html>

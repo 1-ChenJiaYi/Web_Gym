@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <script>
+
+    // XHR的使用：
+    const xhr = new XMLHttpRequest() 
+
+    // 添加监听网络请求的回调 宏任务：
+    xhr.onreadystatechange = function() {
+      if (xhr.readyState !== XMLHttpRequest.DONE) return 
+      const res = xhr.response // 对应的结果 
+      res = JSON.parse(res)
+      // res.banner  
+    } 
+
+    // 监听数据加载完成：
+    xhr.onload = function() {
+      console.log(xhr.response) 
+      console.log(xhr.status) // 获取响应的状态 200、404
+      console.log(xhr.statusText) // 获取响应的文本
+    }
+
+    // 发送请求发生了连接错误
+    xhr.onerror = function() {
+
+    }
+
+    //告知xhr获取的数据类型：默认是text 
+    xhr.responseType = "json"  
+
+    // 配置： 
+    xhr.open("get", "地址", true/false(是否是异步请求))  
+    
+    // 发送post请求：
+    xhr.open("post", "地址")  
+    // 当发送post请求，请求体的内容放在send内：
+    
+    // 在此之前需要设置发送的类型：
+    // xhr.setRequestHeader("content-Type", "application/x-www-form-urlencoded") 
+
+    // xhr.send("name=why&age=18")    
+
+    //xhr.send(FormData) 
+
+    // 发送json: 
+    xhr.setRequestHeader("Content-type", "application/json")
+    xhr.send(JSON.stringify({})) 
+
+    // 发送（浏览器）：
+    // xhr.send() 
+    
+  </script>  
+
+
+</body>
+</html>

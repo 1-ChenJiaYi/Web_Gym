@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <button>
+    取消 
+  </button>
+  
+  <script>  
+    function AJAX({url, method = "get", data = {}, timeout=10000, headers={}} = {}) {
+      const xhr = new XMLHttpRequest() 
+      const promise = new Promise((resolve, reject) => {
+        xhr.onload = function() {
+          if(!(xhr.status >= 200 && xhr.status < 300)) 
+            reject(`${xhr.status}, ${xhr.statusText}`)  
+          const res = xhr.response
+          resolve(res)  
+        }
+
+        xhr.ontimeout = function() {
+          console.log("请求超时：");
+        }
+        xhr.responseType = 'json'
+        // 
+        xhr.timeout = timeout  
+
+        if(method.toUpperCase() === "GET") {
+          let arr = [] 
+          for(const key in data) {
+            const t = String(key)+"="+String(data[key])
+            arr.append(t)    
+          }
+          url = url + "?" + arr.join("&") 
+          xhr.open(method, url) 
+          xhr.send() 
+          return 
+        }
+
+        // post请求 
+        xhr.open(method, url) 
+        xhr.setRequestHeader("Content-type", "application/json")
+        xhr.send(JSON.stringify(data)) 
+      })
+      promise.xhr = xhr 
+      return promise 
+    }   
+    
+  </script>
+  
+  <script>
+    
+  </script>
+</body>
+</html>
