@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <div id="app">
+    <!--  v-if v-elseif -->
+    <div class="box" v-if="flag==1">flag = yes</div>
+    <div class="box" v-else-if="flag==2"> flag = yynn </div>
+    <div class="box" v-else> flag = no</div>
+
+    <button @click="btnclick"> 变化flag </button>
+
+
+    <!-- v-show 相当于在dom中加入了display=none dom树中还会存在 -->  
+    <div class="box" v-show="flag"> 
+      这是一个box
+    </div>
+
+    <!-- template 相当于包裹的东西，可以借助它使用v-if v-for --> 
+    <template>
+      <div class="box">
+
+      </div>
+
+    </template>
+  </div>
+  
+  <script src="./vue.js"></script>
+
+  <script>
+    const App = Vue.createApp({
+      data() {
+        return {
+          flag: 1 
+        } 
+      }, 
+      methods: {
+        btnclick() {
+          console.log(this.flag) 
+          this.flag = (Math.floor(Math.random() * 3))   
+        }
+      }
+    })
+    App.mount("#app") 
+  </script>
+</body>
+</html>

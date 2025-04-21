@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <div id="app">
+    <h1>测试值类型的数据变化侦听</h1>
+    <div class="box">我是一个盒子：{{message}}</div>
+    <button @click="btnclick"> 按钮 </button>
+
+    <h1>测试对象类型的数据变化侦听</h1> 
+    <div class="box">我是一个盒子：{{info}}</div>
+    <button @click="btn"> 按钮 </button>
+
+    <h1>测试desc对象的数据变化</h1> 
+    <div class="box">我是一个盒子：{{desc}}</div>
+    <button @click="bttn"> 按钮 </button>
+
+    <h1>测试数组对象的数据变化</h1>
+    <div class="box">我是一个盒子：{{arr}}</div>
+    <button @click="changeArr"> 我是按钮 </button>
+  </div>
+
+  <script src="./vue.js"></script>
+  <script>
+    const app = Vue.createApp({
+      data() {
+        return {
+          message: 1200, 
+          info: {
+            'djw': 131,
+            'jjjs': 1823,
+            'qwe': 39123
+          }, 
+          desc: {
+            'djw': 123, 
+            'co': {
+              'th': 321
+            }
+          }, 
+          arr: [
+            1, 2, 3, 4, 5 
+          ]
+        }
+      }, 
+      methods: {
+        btnclick() {
+          this.message = Math.floor(Math.random() * 1000) 
+          // console.log("触发btnclick")
+        },
+        btn() {
+          // this.info['djw'] = 9999999
+          this.info = {'djw': 123124} 
+        },
+        bttn() {
+          // this.desc['djw'] = Math.random() * 300 
+          this.desc['co']['th'] = Math.random() * 300
+        }, 
+        changeArr() {
+          // set(this.arr, 0, 300)
+          this.arr[0] =  Math.random() * 300 
+          // 在option_api中直接使用：
+          // this.$set(this.arr, 0, Math.random() * 300) 
+        }
+      },
+      computed: {
+        foo() {
+
+        }
+      }, 
+      watch: {
+        // data内的值：
+        message(nv, ov) {
+          console.log("数据发生了变化", ov, nv)  
+        }, 
+        // 当没有深度监听时，只有整个对象的地址发生改变时才会监听。
+        info(nv, ov) {
+          console.log("对象数据发生变化", ov, nv) 
+        }, 
+        // 对对象完整的监听：
+        desc: {
+          handler(nv, ov) {
+            console.log("desc对象的数据发生了变化：", ov, "=>", nv) 
+          }, 
+          deep: true,  // 开启深度监听，内部的属性发生变化也会检测到, 0 / 1。 
+          immediate: true // 对于存在(定义)这个对象的时候触发与否 
+        }, 
+        // 也可以这样对对象内部的属性进行监听：
+        "desc.djw": function(nv, ov) {
+          console.log("desc对象内部的djw发生改变，", ov, nv) 
+        }, 
+        // arr(nv, ov) {
+        //   console.log("arr对象发生变化: ", ov, nv) 
+        // }, 
+        arr: {
+          handler(nv, ov) {
+            console.log("数组发生变化", ov, nv) 
+          }, 
+          deep: 1, 
+        },
+        // 侦听数组某个元素的值变化：
+        "arr.0"(nv, ov) {
+          console.log("change arr[0]", ov, nv) 
+        }
+        
+      }, 
+      created() {
+        console.log("created")
+        this.message = 1400
+        // $watch侦听：
+        this.$watch("message", (nv, ov) => {
+          console.log("message发生了变化：", nv, ov) 
+        }, {deep: 1})
+      }
+    }) 
+
+    app.mount("#app") 
+  </script>
+</body>
+</html>

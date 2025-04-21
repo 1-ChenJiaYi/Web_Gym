@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+
+  </style>
+</head>
+<body>
+  <div id="app">
+    <div class="test" :style="{color:col}">
+      测试1，改变颜色为随机色 
+    </div>
+    <button @click="foo($event, 123)">改变颜色</button>
+  </div>  
+  <script src="./vue.js"></script>
+  <script>
+    const App = Vue.createApp({
+      data() {
+        return {
+          col: 'rgba(255, 0, 0, 1)', 
+        }
+      }, 
+      methods: {
+        foo(event, foo1) {
+          let arr = [0, 0, 0] 
+          console.log(this.col)
+          for (let i = 0; i < 3; ++ i ) 
+            arr[i] = Math.random() * 255 
+          this.col = `rgba(${arr[0]}, ${arr[1]}, ${arr[2]}, 1)` 
+          console.log(event, `我是参数123${foo1}`) 
+        }, 
+        bar() {
+          
+        }
+      }
+    })  
+
+    App.mount("#app") 
+
+  </script>
+</body>
+</html>

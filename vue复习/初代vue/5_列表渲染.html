@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <div id="app">
+    <div class="box">我是一个盒子</div>
+
+    <!-- v-for 要用模板语法 -->
+    <template v-for="item, idx in list">
+      <div class="text"> {{item}}, {{idx}} </div>
+    </template>
+
+    <!-- 对象的v-for -->
+     <template v-for="va, key, index in info">
+      <div class="box">name: {{key}}</div>
+      <div class="box">val: {{va}}</div>
+      <div class="box">index: {{index}}</div>
+     </template>
+
+     <!-- 数组更新的检验 --> 
+     <h1>这是一个分割线</h1>
+     <div class="test">
+      {{arr}}
+     </div>
+
+     <button @click="btnclick"> 按钮 </button>
+
+
+     <!-- 对于每个v-for的item都加一个key, 可以触发diff算法--> 
+      
+  </div>
+
+  <script src="./vue.js"></script>
+
+  <script>
+    const App = Vue.createApp({
+      data() {
+        return {
+          list: [
+            'osdasd', 
+            'asdasd', 
+            'asdasd', 
+            'asdasd', 
+            'aunsdf'
+          ], 
+          info: {
+            'cjy': 111, 
+            'hxc': 222, 
+            'wb': 333 
+          }, 
+          arr: [1, 2, 3, 4, 5, 6, 7, 8]
+        }
+
+      }, 
+      methods: {
+        /* 
+          在vue2中，是用Object.defineProperty来检测属性变化的，所以直接通过数组索引修改数组是不会被vue检测到的
+        */ 
+        btnclick() {
+          // console.log(this.arr) 
+          // this.arr.push(1231245)  
+          // this.arr = [1, 2, 3, 4] 
+          this.arr[0] = 10087
+          // const newarr = this.arr.map(item => item % 2 === 0)
+          // this.arr = newarr  
+          // console.log(this.arr)  
+        }
+      }
+    })
+
+    App.mount("#app")
+  </script>
+</body>
+</html>

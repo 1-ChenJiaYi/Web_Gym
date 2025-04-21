@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    [v-cloak] {
+      display: none;  
+    }
+
+    .active { 
+      color: red; 
+    }
+  </style>
+</head>
+<body>
+
+  <div id="app">
+    <div class="box">{{message}}</div>
+    <div class="sb">{{counter}}</div>
+
+    <!-- v-text只会渲染一次 -->
+    <h2 v-once>
+      {{oc}}
+    </h2>
+    <button @click="foo"> 
+      v-once按钮
+    </button>
+
+    <!-- 只会渲染v-text的内容 -->
+    <h2 v-text="counter"></h2>
+    
+    <!-- v-html，内部的东西不会渲染，只会渲染v-html -->
+    <div v-html="content">  </div>
+
+    <!-- v-pre, 所有的元素按照原样渲染 --> 
+    <div v-pre>
+      <div class="box">{{color}}</div>
+      <div class="box">{{oc}}</div>
+    </div>
+
+
+    <!-- v-cloak，直到编译完成前boy不可见 --> 
+    <div class="boy" v-cloak>
+      {{message}}
+    </div>
+
+    <!-- v-memo 的使用，可以对组件的渲染有一定的优化，如果不变会将原来的组件树加载上去-->  
+    <!-- v-memo 只会检测数组内的元素，其它的元素，基本等同于v-once -->
+    <div class="box" v-memo="[num1, num2, num3]"> 
+      <span>{{num1}}</span>
+      <span>{{num2}}</span>
+      <span>{{num3}}</span>
+    </div> 
+
+    <!-- v-bind绑定属性名 -->
+    <!-- 属性对象：{css属性：bool值} -->
+    <!-- 简写：v-bind 等价于 : -->
+    <!-- v-bind直接绑定对象 --> 
+
+    <div class="box" :class="{active: isActive}"> 这是一个盒子</div>
+    <div class="box" :[name]="{active: isActive}"> 这是一个box </div>
+    <div class="box" :info="info"></div>
+
+    <button @click="bar">控制上面的box的颜色</button>
+    
+
+    <!--  -->
+  </div>  
+  
+  <script src="./vue.js"></script>
+
+  <script>
+    // 创建一个vue的项目：
+    // this绑定app对象 
+    const app = Vue.createApp({
+      data() {
+        return {
+          message: "12123123我是message", 
+          color: "red", 
+          counter: 12, 
+          oc: 2, 
+          content: '<span> 12123 </span> <h1> 我是222 </h1>', 
+          num1: 1, 
+          num2: 2, 
+          num3: 3, 
+          isActive: true, 
+          name: "class", 
+          info: {"wht": 1, "dd": 2}  
+        }
+      }, 
+      methods: {
+        foo() {
+          this.oc = 10 
+        }, 
+        bar() {
+          this.isActive = !this.isActive 
+        } 
+      }, 
+
+    })
+
+    app.mount("#app") 
+
+
+  </script>
+</body>
+</html>
