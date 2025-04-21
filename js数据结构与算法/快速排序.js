@@ -1,0 +1,3 @@
+class quick_sort {
+  
+}
