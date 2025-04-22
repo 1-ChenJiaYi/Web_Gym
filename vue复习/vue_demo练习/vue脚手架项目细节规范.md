@@ -34,3 +34,12 @@ configureWebpack: {
     }
   }
 }
+
+
+
+---
+
+## 事件总线使用：
+
+npm install hy-event-store 直接使用别人开发好的事件总线库。
+
