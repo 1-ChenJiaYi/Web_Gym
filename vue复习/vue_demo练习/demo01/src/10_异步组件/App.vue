@@ -12,8 +12,10 @@
 </template>
 
 <script>
-  import SonA from "./components/SonA.vue"
+  import { defineAsyncComponent } from 'vue'
+  // import SonA from "./components/SonA.vue"
   
+  const Async1 = defineAsyncComponent(() => import("./components/SonA.vue")) 
   import SonB from "./components/SonB.vue"
 
   import SonC from "./components/SonC.vue"
@@ -21,7 +23,7 @@
 
   export default {
     components: {
-      SonA, SonB, SonC
+      SonA:Async1, SonB, SonC
     }, 
     data() {
       return {
