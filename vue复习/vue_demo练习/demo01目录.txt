@@ -1,0 +1,17 @@
+demo01: 
+(1) 组件开发相关的基础 
+(2) option api的使用 
+(3) 关键点：
+	a、组件通信
+	b、插槽
+	c、inject、provide 
+	d、事件总线
+	e、生命周期钩子函数
+	f、ref获取组件内元素 
+	g、动态组件+keepalive 
+	h、异步组件
+	i、组件中的v-model 
+	j、组件的mixins混入 
+
+
+
